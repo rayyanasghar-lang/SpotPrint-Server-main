@@ -1,0 +1,61 @@
+name: Deploy SpotPrint-server (staging)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    # run on your self-hosted runner (change label to your runner label)
+    runs-on: [self-hosted, linux, spotprint-staging-server]
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.base_ref == 'main')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Copy code to staging webroot
+        run: |
+          set -e
+          TARGET="/home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk"
+          echo "Copying files to $TARGET"
+          # remove .git to avoid exposing repo metadata on the webroot
+          rsync -a --delete --exclude '.git' --exclude 'node_modules' ./ "$TARGET/"
+          cd "$TARGET"
+          # ensure server .env is used - do NOT overwrite if you keep .env on server
+          if [ -f .env.live.server ]; then
+            php -r "copy('.env.live.server', '.env');"
+          fi
+
+      - name: Composer install & optimize
+        run: |
+          cd /home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk
+          export COMPOSER_ALLOW_SUPERUSER=1
+          /usr/bin/php8.3 /usr/local/bin/composer install --no-dev --prefer-dist --optimize-autoloader
+          php artisan key:generate --force || true
+          php artisan migrate --force || true
+          php artisan config:cache
+          php artisan route:cache || true
+          php artisan view:clear
+          php artisan cache:clear
+
+      - name: Permissions
+        run: |
+          cd /home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk
+          chown -R spotprint-staging-server:spotprint-staging-server .
+          find . -type d -exec chmod 0755 {} \;
+          find . -type f -exec chmod 0644 {} \;
+          chmod -R ug+rw storage bootstrap/cache
+
+      - name: Restart PHP-FPM
+        run: |
+          # restart php-fpm if needed (adjust service name)
+          sudo systemctl restart php8.3-fpm || true
+          sudo systemctl reload nginx || true
+
+      - name: Finished
+        run: echo "Staging deployment finished."
