@@ -1,47 +1,46 @@
-name: Deploy SpotPrint-server
+# name: Deploy SpotPrint-server
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+# jobs:
+#   deploy_main:
+   # #i#f: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
+#     name: Deploy to Main Environment
+#     runs-on: server-001
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-jobs:
-  deploy_main:
-    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
-    name: Deploy to Main Environment
-    runs-on: server-001
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # remove .git folder for security reasons
-      # /home/spotprint-server/htdocs/server.spotprint.co.uk/public
-      - name: Copy code and move to web dir
-        run:
-          cp -ar . /home/spotprint-server/htdocs/server.spotprint.co.uk;
-          cd /home/spotprint-server/htdocs/server.spotprint.co.uk/;
-          rm -rf .git*;
+#       # remove .git folder for security reasons
+#       # /home/spotprint-server/htdocs/server.spotprint.co.uk/public
+#       - name: Copy code and move to web dir
+#         run:
+#           cp -ar . /home/spotprint-server/htdocs/server.spotprint.co.uk;
+#           cd /home/spotprint-server/htdocs/server.spotprint.co.uk/;
+#           rm -rf .git*;
 
 
-      # inforced .env everwrite
-      - name: Install Laravel App and fix permissions
-        run:
-          cd /home/spotprint-server/htdocs/server.spotprint.co.uk/;
-          pwd;
-          php -v;
+#       # inforced .env everwrite
+#       - name: Install Laravel App and fix permissions
+#         run:
+#           cd /home/spotprint-server/htdocs/server.spotprint.co.uk/;
+#           pwd;
+#           php -v;
 
-          php -r " copy('.env.live.server', '.env'); ";
-          export COMPOSER_ALLOW_SUPERUSER=1;
-          /usr/bin/php8.3 /usr/local/bin/composer install --optimize-autoloader;
+#           php -r " copy('.env.live.server', '.env'); ";
+#           export COMPOSER_ALLOW_SUPERUSER=1;
+#           /usr/bin/php8.3 /usr/local/bin/composer install --optimize-autoloader;
 
-          chown -R spotprint-server:spotprint-server .;
-          `find . -type d -exec chmod 0755 {} \;`
-          `find . -type f -exec chmod 0644 {} \;`
+#           chown -R spotprint-server:spotprint-server .;
+#           `find . -type d -exec chmod 0755 {} \;`
+#           `find . -type f -exec chmod 0644 {} \;`
 
-          echo "Deployment to live environment completed successfully!"
-          echo "CTO DS-Tech => Muhammad Irfan Afzal"
+#           echo "Deployment to live environment completed successfully!"
+#           echo "CTO DS-Tech => Muhammad Irfan Afzal"
 
   
