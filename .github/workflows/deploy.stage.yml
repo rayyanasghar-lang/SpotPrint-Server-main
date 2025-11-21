@@ -1,61 +1,42 @@
-name: Deploy SpotPrint-server (staging)
+name: Deploy Laravel Server to CloudPanel
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - staging
 
 jobs:
   deploy:
-    # run on your self-hosted runner (change label to your runner label)
-    runs-on: [self-hosted, linux, spotprint-staging-server]
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.base_ref == 'main')
+    name: Deploy Laravel Server
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          fetch-depth: 0
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Copy code to staging webroot
+      - name: Copy files to CloudPanel (rsync)
         run: |
-          set -e
-          TARGET="/home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk"
-          echo "Copying files to $TARGET"
-          # remove .git to avoid exposing repo metadata on the webroot
-          rsync -a --delete --exclude '.git' --exclude 'node_modules' ./ "$TARGET/"
-          cd "$TARGET"
-          # ensure server .env is used - do NOT overwrite if you keep .env on server
-          if [ -f .env.live.server ]; then
-            php -r "copy('.env.live.server', '.env');"
-          fi
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.APP_DIR }}
 
-      - name: Composer install & optimize
+      - name: Run Laravel post-deploy commands
         run: |
-          cd /home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk
-          export COMPOSER_ALLOW_SUPERUSER=1
-          /usr/bin/php8.3 /usr/local/bin/composer install --no-dev --prefer-dist --optimize-autoloader
-          php artisan key:generate --force || true
-          php artisan migrate --force || true
-          php artisan config:cache
-          php artisan route:cache || true
-          php artisan view:clear
-          php artisan cache:clear
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ${{ secrets.APP_DIR }}
 
-      - name: Permissions
-        run: |
-          cd /home/spotprint-staging-server/htdocs/staging.server.spotprint.co.uk
-          chown -R spotprint-staging-server:spotprint-staging-server .
-          find . -type d -exec chmod 0755 {} \;
-          find . -type f -exec chmod 0644 {} \;
-          chmod -R ug+rw storage bootstrap/cache
+          # Install dependencies
+          composer update
+          composer install --no-dev --optimize-autoloader
 
-      - name: Restart PHP-FPM
-        run: |
-          # restart php-fpm if needed (adjust service name)
-          sudo systemctl restart php8.3-fpm || true
-          sudo systemctl reload nginx || true
+          # Laravel tasks
+          php artisan key:generate
 
-      - name: Finished
-        run: echo "Staging deployment finished."
+          # Fix permissions
+          chmod -R 775 storage bootstrap/cache
+          EOF
