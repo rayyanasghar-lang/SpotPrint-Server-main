@@ -12,7 +12,8 @@ jobs:
   deploy_main:
     if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
     name: Deploy to Main Environment
-    runs-on: server-staging-001
+    runs-on: [self-hosted, Linux, ARM64]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
