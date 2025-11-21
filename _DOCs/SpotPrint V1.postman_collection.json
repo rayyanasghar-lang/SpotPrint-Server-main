@@ -1,0 +1,1086 @@
+{
+	"info": {
+		"_postman_id": "c8fa2727-b71d-4112-9c04-ba7692a54904",
+		"name": "SpotPrint V1",
+		"description": "This template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n### How to use this template:\n\n- Replace the content given brackets (()) with your API's details.\n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe ((product name)) provides many API products, tools, and resources that enable you to ((add product value here)).\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the ((add APIs here)), you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use a valid API Key to send requests to the API endpoints. You can get your API key from Postman's [integrations dashboard](https://go.postman.co/settings/me/api-keys).\n- The API has [rate and usage limits](https://postman.postman.co/workspace/Collection-Templates~6311738d-2e70-441f-ae12-78caf078c5b7/collection/22517504-e9c28f47-1253-44af-a2f3-20dce4da1f18?ctx=documentation#rate-and-usage-limits).\n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe ((product name)) API uses ((add your API's authorization type)) for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nPostman uses API keys for authentication. You can generate a Postman API key in the [API keys](https://postman.postman.co/settings/me/api-keys) section of your Postman account settings.\n\nYou must include an API key in each request to the Postman API with the X-Api-Key request header.\n\n### Authentication error response\n\nIf an API key is missing, malformed, or invalid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 300 requests per minute. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `X-RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there’s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25792"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Check Availability",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": \"admin@demo.com\",\n    \"type\": \"email\"\n}\n\n/* \nphone dublication is allowed\n{\n    \"data\": \"0311-7770808\",\n    \"type\": \"phone\"\n}\n */",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/check_availability",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"check_availability"
+									]
+								},
+								"description": "Gets information about the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Muhammad Irfan Afzal\", // required|max:100\n    \"email\": \"mi35afzal@gmail.com\", // required|max:100\n    \"password\": \"12345678\", // required|min:8\n    \"role\": \"admin\", // required|admin,user,therapist\n    \"phone\": \"0311-7770808\", // required|max:20\n    \"profile\": { //required\n        \"dob\": \"1988-12-24\",\n        \"address\":{\n            \"text\": \"madina town faisalabad\",\n            \"label\": \"office\",\n            \"lat\": \"31.421185568827966\",\n            \"long\": \"73.11461380999987\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/register",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send OTP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": \"mi3afzal@gmail.com\",\n    \"type\": \"email\"\n}\n/* {\n    \"data\": \"03117770808\",\n    \"type\": \"phone\"\n} */\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/send_otp",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"send_otp"
+									]
+								},
+								"description": "Gets information about the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": \"mi3afzal@gmail.com\",\n    \"type\": \"email\",\n    \"otp\": \"702207\"\n}\n\n/* {\n    \"data\": \"03117770808\",\n    \"type\": \"phone\",\n    \"otp\": \"123456\"\n} */\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/verify_otp",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"verify_otp"
+									]
+								},
+								"description": "Gets information about the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = pm.response.json();",
+											"pm.collectionVariables.set('TOKEN', res.data.accessToken);",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@demo.com\",\n    \"password\": \"12345678\",\n    \"allowed_roles\": [\"Admin\"], // required|admin,user\n    \"remember_me\":true\n}\n\n/* \nadmin@demo.com\nuser@demo.com\n */",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/login",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": "Gets information about the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('TOKEN', '');"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true,
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/logout",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forgot Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"mi3afzal@gmail.com\"\n}\n\n// this end point will return token only\n// to send OTP and verify otp we have to use send_otp, and verify_otp APIs\n// after that we have to call password reset API",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/get_forgot_password_token",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"get_forgot_password_token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\": \"hnx4yaddsjLyK4lPBeXKoSIDHVMUK5eyKCx8ToFtfPxl7jSeXI0AspTCbEGapLBB\",\n    \"password\": \"87654321\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/auth/reset_password",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "The `/me` endpoints let you manage information about the authenticated user."
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get All",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/users",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/users/7",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Muhammad Irfan Afzal\", // required|max:100\n    \"email\": \"mi36afzal@gmail.com\", // required|max:100\n    \"password\": \"12345678\", // required|min:8\n    \"role\": \"therapist\", // required|admin,user,therapist\n    \"phone\": \"03117770808\", // required|max:20\n    \"profile\": { //required\n        \"dob\": \"1988-12-24\",\n\n        \"gender\": \"Male\", //new\n        \"experince\": \"3 Years\", //new\n        \"rating\": \"4.8\", //new\n\n        \"address\":{\n            \"text\": \"madina town faisalabad\",\n            \"label\": \"office\",\n            \"lat\": \"31.421185568827966\",\n            \"long\": \"73.11461380999987\"\n        },\n        \"availability\": [{\"day\": \"1\", \"name\": \"Monday\", \"slots\": [{\"end_time\": \"12:00\", \"start_time\": \"09:00\"}, {\"end_time\": \"20:00\", \"start_time\": \"17:00\"}], \"availability\": \"1\"}, {\"day\": \"2\", \"name\": \"Tuesday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}, {\"day\": \"3\", \"name\": \"Wednesday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}, {\"day\": \"4\", \"name\": \"Thursday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}, {\"day\": \"5\", \"name\": \"Friday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}, {\"day\": \"6\", \"name\": \"Saturday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}, {\"day\": \"7\", \"name\": \"Sunday\", \"slots\": [{\"end_time\": \"18:00\", \"start_time\": \"09:00\"}], \"availability\": \"1\"}]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/users",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Muhammad Irfan Afzal\", // required|max:100\n    \"email\": \"mi36afzal@gmail.com\", // required|max:100\n    \"password\": \"1234567890\", // required|min:8\n    \"role\": \"user\", // required|admin,user,therapist\n    \"phone\": \"03117779999\", // required|max:20\n    \"profile\": { //required\n        \"dob\": \"1988-12-24\",\n        \"address\":{\n            \"text\": \"madina town faisalabad\",\n            \"label\": \"home\",\n            \"lat\": \"31.421185568827966\",\n            \"long\": \"73.11461380999987\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/users/7",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/users/6",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dashboard",
+					"item": []
+				},
+				{
+					"name": "Categories",
+					"item": []
+				},
+				{
+					"name": "Products",
+					"item": []
+				},
+				{
+					"name": "Orders",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Frontend",
+			"item": [
+				{
+					"name": "Estimate Cost",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": \"100000\",\n    \"size\": \"A4\",\n    \"number_of_pages\": \"16\",\n    \"sheet_type\": \"Uncoated\",\n    \"sheet_weight_in_grams\": \"250\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/cart/estimate_cost",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"estimate_cost"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "{{BASE_URL}}/api/v1/estimate_cost res",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"quantity\": \"100000\",\n    \"size\": \"A4\",\n    \"number_of_pages\": \"16\",\n    \"sheet_type\": \"Uncoated\",\n    \"sheet_weight_in_grams\": \"250\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/cart/estimate_cost",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"cart",
+										"estimate_cost"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.11"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 12 Oct 2024 20:23:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"success\",\n    \"data\": {\n        \"plate_cost_final\": 200,\n        \"tota_sheets_required\": 100300,\n        \"cost_of_papers\": 17331.84,\n        \"final_printing_cost\": 2407.2,\n        \"final_cutting_cost\": 2166.4800000000005,\n        \"folding_cost\": 0,\n        \"stitching_cost\": 729.2857142857143,\n        \"cost_of_delivery\": {\n            \"dpd\": 5416.200000000002,\n            \"pallet\": 1251.7440000000004,\n            \"final\": 1251.7440000000004\n        },\n        \"total_cost\": 24086.549714285713,\n        \"total_price\": 26495.204685714285\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "sample-pack-request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+44 123456789\",\n    \"address\": \"123 Sample Street, London, UK\",\n    \"notes\": \"Please include all paper types.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/frontend/sample-pack-request",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"frontend",
+								"sample-pack-request"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "{{BASE_URL}}/api/v1/estimate_cost res",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"quantity\": \"100000\",\n    \"size\": \"A4\",\n    \"number_of_pages\": \"16\",\n    \"sheet_type\": \"Uncoated\",\n    \"sheet_weight_in_grams\": \"250\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/cart/estimate_cost",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"cart",
+										"estimate_cost"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.11"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 12 Oct 2024 20:23:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"success\",\n    \"data\": {\n        \"plate_cost_final\": 200,\n        \"tota_sheets_required\": 100300,\n        \"cost_of_papers\": 17331.84,\n        \"final_printing_cost\": 2407.2,\n        \"final_cutting_cost\": 2166.4800000000005,\n        \"folding_cost\": 0,\n        \"stitching_cost\": 729.2857142857143,\n        \"cost_of_delivery\": {\n            \"dpd\": 5416.200000000002,\n            \"pallet\": 1251.7440000000004,\n            \"final\": 1251.7440000000004\n        },\n        \"total_cost\": 24086.549714285713,\n        \"total_price\": 26495.204685714285\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Start Support Chat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "participants",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "SupportChat",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v2/conversations",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Conversations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "participants",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v2/conversations",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v2/conversations",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add messages",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "no no",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v2/conversations/1/messages",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"conversations",
+								"1",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v2/conversations/1/messages",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"conversations",
+								"1",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chat Contacts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/admin/v2/chat-contacts",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v2",
+								"chat-contacts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[7]",
+									"type": "file",
+									"src": "postman-cloud:///1efa5167-ef4a-4300-a8ed-31987392fec1"
+								},
+								{
+									"key": "path",
+									"value": "orders/7",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/upload/file",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"upload",
+								"file"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Upload File res",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files[7]",
+											"description": "php artisan storage:link",
+											"type": "file",
+											"src": "postman-cloud:///1efa5167-ef4a-4300-a8ed-31987392fec1"
+										},
+										{
+											"key": "path",
+											"value": "orders/7",
+											"description": "http://localhost:8000/storage/orders/5/1731870790_749.jpg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/upload/file",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"upload",
+										"file"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Nov 2024 20:15:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Files uploaded successfully\",\n    \"data\": {\n        \"7\": \"storage/orders/7/1731874503_105.jpg\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "spotprint.local",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN",
+			"value": "2|i6yAxP2TQz1dJ1UqSKK0HmW53accvaUhlemQDSF14de3ad67"
+		}
+	]
+}
