@@ -1,42 +1,42 @@
-name: Deploy Laravel Server to CloudPanel
+# name: Deploy Laravel Server to CloudPanel
 
-on:
-  push:
-    branches:
-      - staging
+# on:
+#   push:
+#     branches:
+#       - staging
 
-jobs:
-  deploy:
-    name: Deploy Laravel Server
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     name: Deploy Laravel Server
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Copy files to CloudPanel (rsync)
-        run: |
-          rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.APP_DIR }}
+#       - name: Copy files to CloudPanel (rsync)
+#         run: |
+#           rsync -avz --delete \
+#             -e "ssh -o StrictHostKeyChecking=no" \
+#             ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.APP_DIR }}
 
-      - name: Run Laravel post-deploy commands
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd ${{ secrets.APP_DIR }}
+#       - name: Run Laravel post-deploy commands
+#         run: |
+#           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+#           cd ${{ secrets.APP_DIR }}
 
-          # Install dependencies
-          composer update
-          composer install --no-dev --optimize-autoloader
+#           # Install dependencies
+#           composer update
+#           composer install --no-dev --optimize-autoloader
 
-          # Laravel tasks
-          php artisan key:generate
+#           # Laravel tasks
+#           php artisan key:generate
 
-          # Fix permissions
-          chmod -R 775 storage bootstrap/cache
-          EOF
+#           # Fix permissions
+#           chmod -R 775 storage bootstrap/cache
+#           EOF
