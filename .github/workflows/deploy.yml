@@ -23,7 +23,7 @@ jobs:
         run:
           cp -ar . /home/staging.server.spotprint.co.uk/htdocs/staging.server.spotprint.co.uk;
           cd /home/staging.spotprint-server/htdocs/staging.server.spotprint.co.uk/;
-          rm -rf .git*;
+          rm -rf .git*; 
 
 
       # inforced .env everwrite
